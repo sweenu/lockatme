@@ -8,5 +8,5 @@ before_install:
 install: "make"
 
 script:
-    #    - make test
+    - make test
     - make flake8
