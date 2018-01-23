@@ -17,12 +17,11 @@ if __name__ == '__main__':
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
         
-        for (top,right,bottom,left), face_encoding in zip(face_locations,face_encodings):
+        for face_encoding in face_encodings:
             
-            match = face_recognition.compare_faces([pl_face_encoding], face_encoding)
-
-            if match[0]:            
+            if face_recognition.compare_faces([pl_face_encoding], face_encoding)[0]:
                 proc.kill()
+                print("Visage reconnu")
                 reco = False
 
     video_capture.release()
