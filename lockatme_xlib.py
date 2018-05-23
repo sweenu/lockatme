@@ -1,4 +1,8 @@
 from Xlib import X, display
+import time
+
+# from lockatme.unlockers.facial_recognition import authenticate
+from lockatme.unlockers.password import authenticate
 
 
 def lock_screen(display, screen_nb):
@@ -11,7 +15,7 @@ def lock_screen(display, screen_nb):
     window = root.create_window(0, 0, display_width, display_height,
                                 0, depth, window_class=X.CopyFromParent,
                                 visual=screen.root_visual,
-                                override_redirect=1)
+                                override_redirect=1, background_pixel=screen.black_pixel)
 
     pixmap = window.create_pixmap(8, 8, 1)
     invisible_cursor = pixmap.create_cursor(pixmap, (0, 0, 0), (0, 0, 0), 0, 0)
@@ -27,10 +31,18 @@ def lock_screen(display, screen_nb):
     window.map()
 
 
+def main_loop():
+    while True:
+        try:
+            if authenticate(): break
+        except KeyboardInterrupt:
+            continue
+
+
 if __name__ == '__main__':
     display = display.Display()
     for screen in range(display.screen_count()):
         lock_screen(display, screen)
 
     display.sync()
-    time.sleep(5)
+    main_loop()

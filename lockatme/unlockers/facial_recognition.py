@@ -1,17 +1,33 @@
-import face_recognition as fr
+import time
+
+import face_recognition as face
+import cv2
 
 
-def is_recognized(imageSet, imagePath):
-    model_image = fr.load_image_file(imageSet)
-    unknown_image = fr.load_image_file(imagePath)
+def is_recognized(model_image_path, test_image):
+    model_image = face.load_image_file(model_image_path)
 
-    model_face_encoding = fr.face_encodings(model_image)[0]
-    unknown_face_encoding = fr.face_encodings(unknown_image)[0]
+    model_face_encoding = face.face_encodings(model_image)[0]
+    test_face_locations = face.face_locations(test_image)
+    test_face_encodings = face.face_encodings(test_image, test_face_locations)
 
-    know_faces = [
+    known_faces = [
         model_face_encoding
     ]
 
-    results = fr.compare_faces(know_faces, unknown_face_encoding)
+    matches = []
+    for _, face_encoding in zip(face_locations, test_face_encodings):
+        matches.append(face.compare_faces(known_faces, face_encoding))
 
-    return any(results)
+    return any(matches)
+
+
+camera = cv2.VideoCapture(0)
+def authenticate():
+    _, shot = video_capture.read()
+    shot = shot[:, :, ::-1] # Conversion from BGR to RGB
+    if is_recognized('/home/sweenu/Pictures/prof_pic.jpg'):
+        camera.release()
+        cv2.destroyAllWindows()
+        return True
+    time.sleep(1)
