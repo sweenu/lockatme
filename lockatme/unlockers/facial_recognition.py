@@ -16,18 +16,17 @@ def is_recognized(model_image_path, test_image):
     ]
 
     matches = []
-    for _, face_encoding in zip(face_locations, test_face_encodings):
-        matches.append(face.compare_faces(known_faces, face_encoding))
+    for _, face_encoding in zip(test_face_locations, test_face_encodings):
+        matches.append(face.compare_faces(known_faces, face_encoding, tolerance=0.6))
 
     return any(matches)
 
 
 camera = cv2.VideoCapture(0)
 def authenticate():
-    _, shot = video_capture.read()
+    _, shot = camera.read()
     shot = shot[:, :, ::-1] # Conversion from BGR to RGB
-    if is_recognized('/home/sweenu/Pictures/prof_pic.jpg'):
+    if is_recognized('/home/sweenu/Pictures/random_pic.jpg', shot):
         camera.release()
         cv2.destroyAllWindows()
         return True
-    time.sleep(1)

@@ -2,7 +2,7 @@ from Xlib import X, display
 import time
 
 # from lockatme.unlockers.facial_recognition import authenticate
-from lockatme.unlockers.password import authenticate
+from lockatme.unlockers.facial_recognition import authenticate
 
 
 def lock_screen(display, screen_nb):
