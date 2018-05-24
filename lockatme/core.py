@@ -3,7 +3,6 @@ from Xlib import display
 
 from .lock import lock_screen
 from .auth import auth_loop
-from .unlockers.password import authenticate
 
 
 def main(args=sys.argv[1:0]):
