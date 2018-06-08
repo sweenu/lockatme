@@ -1,10 +1,11 @@
 import os
 import configparser
-from pathlib import Path
 from importlib import import_module
+from pathlib import Path
+from threading import Thread, Event
 
 
-def auth_loop():
+def get_modules_auth_functions():
     config = configparser.ConfigParser(allow_no_value=True)
     config_path = Path.home() / '.config' / 'lockatme/config'
     if os.environ.get('XDG_CONFIG_HOME'):
@@ -12,16 +13,29 @@ def auth_loop():
 
     config.read(config_path)
 
-    try:
-        for unlocker in config['unlockers']:
-            if os.fork() == 0:
-                u = import_module(f'.{unlocker}', 'lockatme.unlockers')
-                while True:
-                    if u.authenticate():
-                        os._exit(0)
+    auth_functions = []
+    for unlocker in config['unlockers']:
+        u = import_module(f'.{unlocker}', 'lockatme.unlockers')
+        auth_functions.append(u.authenticate)
 
-        os.waitpid(-1, 0)
+    return auth_functions
 
-    except KeyboardInterrupt:
-        # continue
-        raise KeyboardInterrupt
+
+def add_event(func, event):
+    def f():
+        func()
+        event.set()
+
+    return f
+
+
+def auth_loop():
+    authenticated = Event()
+    auth_functions = get_modules_auth_functions()
+
+    for auth_function in auth_functions:
+        authenticate = add_event(auth_function, authenticated)
+        t = Thread(target=authenticate)
+        t.start()
+
+    authenticated.wait()

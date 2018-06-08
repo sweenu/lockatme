@@ -1,5 +1,3 @@
-import time
-
 import face_recognition as face
 import cv2
 
@@ -22,11 +20,13 @@ def is_recognized(model_image_path, test_image):
     return any(matches)
 
 
-camera = cv2.VideoCapture(0)
 def authenticate():
-    _, shot = camera.read()
-    shot = shot[:, :, ::-1] # Conversion from BGR to RGB
-    if is_recognized('/home/sweenu/Pictures/prof_pic.jpg', shot):
-        camera.release()
-        cv2.destroyAllWindows()
-        return True
+    camera = cv2.VideoCapture(0)
+
+    while True:
+        _, shot = camera.read()
+        shot = shot[:, :, ::-1]  # Conversion from BGR to RGB
+        if is_recognized('/home/sweenu/Pictures/prof_pic.jpg', shot):
+            camera.release()
+            cv2.destroyAllWindows()
+            return
