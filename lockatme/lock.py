@@ -24,3 +24,9 @@ def lock_screen(display: display.Display, screen_nb: int):
     window.grab_keyboard(True, pointer_mode=X.GrabModeAsync,
                          keyboard_mode=X.GrabModeAsync, time=X.CurrentTime)
     window.map()
+
+
+def lock(display: display.Display):
+    for screen in range(display.screen_count()):
+        lock_screen(display, screen)
+    display.sync()

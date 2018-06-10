@@ -1,1 +1,0 @@
-from unlockers.facial_recognition import authenticate

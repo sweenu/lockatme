@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+click = "*"
 opencv-python = "*"
 dlib = "*"
 face_recognition = "*"
