@@ -4,9 +4,4 @@
 #  / / /__\ \ )_/ / /\ \ \_   / /  \ \  / / _ \ \ ( ( (    \ \ \\// / // /__/_
 # ( (_____(\ \/_\/ /  ) )__/\( (_(\ \ \( (_( )_) ) \ \ \    )_) )( (_(( (_____\
 #  \/_____/ )_____(   \/___\/ \/_//__\/ \/_/ \_\/  /_/_/    \_\/  \/_/ \/_____/
-
-__title__ = 'lockatme'
-__description__ = 'A screen lock with facial recognition abilites.'
 __version__ = '0.0.1'
-__author_email__ = 'brunoinec@gmail.com'
-__license__ = 'MIT'

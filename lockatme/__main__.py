@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-"""The main entry point."""
-from .core import main
-
+def main():
+    from .cli import main
+    main()
 
 if __name__ == '__main__':
     main()

@@ -1,33 +1,28 @@
 #!/usr/bin/env python
-
-# Note: To use the 'upload' functionality of this file, you must:
-#   $ pip install twine
-
-import io
 import os
 import sys
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
 
-NAME = 'lockatme'
-DESCRIPTION = 'A screen lock with facial recognition abilities. '
-URL = 'https://github.com/Sweenu/lockatme'
-EMAIL = 'brunoinec@gmail.com'
-AUTHOR = 'Pierre-Louis Sergent, Bruno Inec, David Anandanadaradja'
+install_requires = [
+    'python-xlib'
+]
+facial_recognition = ['opencv-python', 'dlib', 'face-recognition']
+pam_password = ['pamela']
+install_requires += facial_recognition + pam_password
 
-REQUIRED = [
-    'face_recognition', 'opencv-python'
+tests_require = [
+    'pytest'
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(os.path.join(here, 'README.rst')) as f:
     long_description = '\n' + f.read()
 
-# Load the package's __version__.py module as a dictionary.
 about = {}
-with open(os.path.join(here, NAME, '__version__.py')) as f:
+with open(os.path.join(here, 'lockatme/__version__.py')) as f:
     exec(f.read(), about)
 
 
@@ -40,7 +35,7 @@ class UploadCommand(Command):
     @staticmethod
     def status(s):
         """Prints things in bold."""
-        print(f'\033[1m{s}\033[0m')
+        print('\033[1m{0}\033[0m'.format(s))
 
     def initialize_options(self):
         pass
@@ -56,40 +51,45 @@ class UploadCommand(Command):
             pass
 
         self.status('Building Source and Wheel (universal) distribution…')
-        os.system(f'{sys.executable} setup.py sdist bdist_wheel --universal')
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
 
         self.status('Uploading the package to PyPi via Twine…')
         os.system('twine upload dist/*')
 
+        self.status('Pushing git tags…')
+        os.system('git tag v{0}'.format(about['__version__']))
+        os.system('git push --tags')
+        
         sys.exit()
 
 
-# Where the magic happens:
 setup(
-    name=NAME,
+    name='lockatme',
     version=about['__version__'],
-    description=DESCRIPTION,
+    description='Modulable screen locker',
     long_description=long_description,
-    author=AUTHOR,
-    author_email=EMAIL,
-    url=URL,
-    packages=find_packages(exclude=('tests',)),
-
-    # entry_points={
-    #     'console_scripts': ['lockatme=lockatme:__main__'],
-    # },
-    install_requires=REQUIRED,
+    author=('Pierre-Louis Sergent, David Anandanadaradja, '
+           'Matthieu Kirschleger, Sagar Gueye, Bruno Inec'),
+    author_email='brunoinec@gmail.com',
+    url='https://github.com/Sweenu/lockatme',
+    packages=find_packages(exclude=['tests']),
+    entry_points={'console_scripts': ['lockatme = lockatme.__main__:main']},
+    python_requires='>=3.6.0',
+    install_requires=install_requires,
+    tests_require=tests_require,
     include_package_data=True,
     license='MIT',
     classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
         'License :: OSI Approved :: MIT License',
+        'Intended Audience :: End Users/Desktop',
+        'Topic :: Desktop Environment :: Screen Savers',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
+        'Operating System :: POSIX :: Linux',
+        'Environment :: X11 Applications',
     ],
-    # $ setup.py publish support.
-    cmdclass={
-        'upload': UploadCommand,
-    },
+    cmdclass={'upload': UploadCommand},
 )
