@@ -7,6 +7,7 @@ to use the same locker for different types of authentication.
 **This locker is in development stage, there is nothing secure about it.
 Don't use it for real application just yet.**
 
+|pypi|
 
 .. contents::
 
@@ -70,5 +71,6 @@ If you want to use both password and facial recognition at the same time:
     facial_recogntion
 
 
-.. |warning| image:: https://png2.kisspng.com/sh/e4d188bc0f796f71a746c6d034155baf/L0KzQYi4UsA5N2Q4UZGAYULlQYjsU8A5a2U1SJCEMkW2QYq5WcE2OWM8T6UBMEOzQ4aCTwBvbz==/5a2b17e308c400.9253192915127736030359.png
-    :scale: 1%
+.. |pypi| image:: https://pypip.in/v/lockatme/badge.png
+    :target: https://pypi.org/project/lockatme/
+    :alt: Latest PyPI version
