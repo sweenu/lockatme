@@ -13,6 +13,7 @@ def main():
     lockatme: Modulable screen locker.
     """
     display = Display()
-    lock(display) 
+    window = lock(display)
+    window.sync()
     auth_loop()
     os._exit(0)

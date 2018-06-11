@@ -29,4 +29,5 @@ def lock_screen(display: display.Display, screen_nb: int):
 def lock(display: display.Display):
     for screen in range(display.screen_count()):
         lock_screen(display, screen)
-    display.sync()
+
+    return display
