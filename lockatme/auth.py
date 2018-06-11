@@ -11,7 +11,15 @@ def get_modules_auth_functions():
     if os.environ.get('XDG_CONFIG_HOME'):
         config_path = Path(os.environ.get('XDG_CONFIG_HOME')) / 'lockatme/config'
 
-    config.read(config_path)
+    try:
+        config_file = open(config_path)
+    except FileNotFoundError:
+        with open(config_path, 'w') as config_file:
+            config_file.write("[unlockers]\npassword")
+        config_file = open(config_path)
+    finally:
+        config.read_file(config_file)
+        config_file.close()
 
     auth_functions = []
     for unlocker in config['unlockers']:
