@@ -28,7 +28,7 @@ def get_modules_auth_functions():
 
     auth_functions = []
     for unlocker in config['unlockers']:
-        u = import_module(f'.{unlocker}', 'lockatme.unlockers')
+        u = import_module('.{}'.format(unlocker), 'lockatme.unlockers')
 
         options = {}
         if unlocker in config.sections():

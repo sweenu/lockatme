@@ -74,7 +74,7 @@ setup(
     url='https://github.com/Sweenu/lockatme',
     packages=find_packages(exclude=['tests']),
     entry_points={'console_scripts': ['lockatme = lockatme.__main__:main']},
-    python_requires='>=3.6.0',
+    python_requires='>=3.5.0',
     install_requires=install_requires,
     tests_require=tests_require,
     include_package_data=True,
