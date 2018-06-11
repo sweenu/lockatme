@@ -20,13 +20,13 @@ def is_recognized(model_image_path, test_image):
     return any(matches)
 
 
-def authenticate():
+def authenticate(path):
     camera = cv2.VideoCapture(0)
 
     while True:
         _, shot = camera.read()
         shot = shot[:, :, ::-1]  # Conversion from BGR to RGB
-        if is_recognized('/home/sweenu/Pictures/prof_pic.jpg', shot):
+        if is_recognized(path, shot):
             camera.release()
             cv2.destroyAllWindows()
             return

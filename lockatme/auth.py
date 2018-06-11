@@ -29,14 +29,20 @@ def get_modules_auth_functions():
     auth_functions = []
     for unlocker in config['unlockers']:
         u = import_module(f'.{unlocker}', 'lockatme.unlockers')
-        auth_functions.append(u.authenticate)
+
+        options = {}
+        if unlocker in config.sections():
+            for option in config[unlocker]:
+                options.update({option: config[unlocker][option]})
+
+        auth_functions.append((u.authenticate, options))
 
     return auth_functions
 
 
-def add_event(func, event):
+def add_event(func, event, args_dict):
     def f():
-        func()
+        func(**args_dict)
         event.set()
 
     return f
@@ -46,8 +52,8 @@ def auth_loop():
     authenticated = Event()
     auth_functions = get_modules_auth_functions()
 
-    for auth_function in auth_functions:
-        authenticate = add_event(auth_function, authenticated)
+    for auth_function, options in auth_functions:
+        authenticate = add_event(auth_function, authenticated, options)
         t = Thread(target=authenticate)
         t.start()
 
