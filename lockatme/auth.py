@@ -6,18 +6,23 @@ from threading import Thread, Event
 
 
 def get_modules_auth_functions():
-    config = configparser.ConfigParser(allow_no_value=True)
-    config_path = Path.home() / '.config' / 'lockatme/config'
     if os.environ.get('XDG_CONFIG_HOME'):
-        config_path = Path(os.environ.get('XDG_CONFIG_HOME')) / 'lockatme/config'
+        config_home = Path(os.environ.get('XDG_CONFIG_HOME'))
+    else:
+        config_home = Path.home() / '.config' 
+
+    config_dir = config_home / 'lockatme'
+    config_dir.mkdir(exist_ok=True)
+
+    config_path = config_dir / 'config'
 
     try:
-        config_file = open(config_path)
+        config_file = config_path.open()
     except FileNotFoundError:
-        with open(config_path, 'w') as config_file:
-            config_file.write("[unlockers]\npassword")
-        config_file = open(config_path)
+        config_path.write_text('[unlockers]\npassword')
+        config_file = config_path.open()
     finally:
+        config = configparser.ConfigParser(allow_no_value=True)
         config.read_file(config_file)
         config_file.close()
 
