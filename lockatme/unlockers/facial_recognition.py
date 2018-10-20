@@ -13,11 +13,13 @@ def is_recognized(model_image_path, test_image):
         model_face_encoding
     ]
 
-    matches = []
-    for _, face_encoding in zip(test_face_locations, test_face_encodings):
-        matches.append(face.compare_faces(known_faces, face_encoding, tolerance=0.6))
+    for face_encoding in test_face_encodings:
+        matches = face.compare_faces(known_faces, face_encoding)
 
-    return any(matches)
+        if True in matches:
+            return True
+
+    return False
 
 
 def authenticate(path):
