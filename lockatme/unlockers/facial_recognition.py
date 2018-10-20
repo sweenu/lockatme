@@ -25,10 +25,16 @@ def is_recognized(model_image_path, test_image):
 def authenticate(path):
     camera = cv2.VideoCapture(0)
 
+    process_shot = True
     while True:
         _, shot = camera.read()
+        shot = cv2.resize(shot, (0, 0), fx=0.25, fy=0.25) # 1/4 the size of original
         shot = shot[:, :, ::-1]  # Conversion from BGR to RGB
-        if is_recognized(path, shot):
-            camera.release()
-            cv2.destroyAllWindows()
-            return
+
+        if process_shot:
+            if is_recognized(path, shot):
+                camera.release()
+                cv2.destroyAllWindows()
+                return
+
+        process_shot = not process_shot
