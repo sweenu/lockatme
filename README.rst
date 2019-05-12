@@ -68,7 +68,7 @@ If you want to use both password and facial recognition at the same time:
 
     [unlockers]
     password
-    facial_recogntion
+    facial_recognition
 
 
 .. |pypi| image:: https://pypip.in/v/lockatme/badge.png
