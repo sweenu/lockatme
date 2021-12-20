@@ -1,4 +1,4 @@
-lockatme: Modulable Screen Locker
+lockatme: Modular Screen Locker
 #################################
 
 lockatme is a screen locker that works with modules. It allows the user
@@ -17,7 +17,7 @@ Don't use it for real application just yet.**
 Main features
 =============
 
-* Modulable
+* Modular
 * Themable (TODO)
 
 
